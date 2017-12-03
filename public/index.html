@@ -6,34 +6,41 @@
 
 	<title>News Scraper</title>
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
 
 </head>
 <body>
 
 	<header>
-		<nav class="nav">
+		<nav class="nav" id="nav-bar">
 		  <a class="nav-link" href="/">Home</a>
-		  <a class="nav-link" href="/saved">Link</a>
-		  <a class="btn btn-danger" id="srape-new">Scrape New Articles</a>
+		  <a class="nav-link" href="/saved">Saved Articles</a>
+		  <a class="btn btn-warning" id="srape-new" href="/scrape">Scrape New Articles</a>
 		</nav>
 
-		<div class="jumbotron">
-			<h1>News Scraper</h1>
-		</div>
+	<div class="jumbotron jumbotron-fluid">
+	  <div class="container">
+	    <h1 class="display-3">News Scraper</h1>
+	    <p class="lead">Scrape articles. Save articles. Note articles.</p>
+	  </div>
+	</div>
+
 	</header>
 	
 	<div class="container">
 		<div id="articles">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3>
-						<a class="article-url" target="_blank" href="#">title</a>
-						<a class="btn btn-success btn-save">Save Article</a>
-					</h3>
-				</div>
-					<div class="panel-body">body</div>
-			</div>
+
+<!-- 			<div class="card">
+			  <div class="card-header">
+			  	<h4 class="card-title">Special title treatment</h4>
+			  </div>
+			  <div class="card-body">
+			    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+			    <a href="#" class="btn btn-info save-btn">Save Article</a>
+			  </div>
+			</div> -->
+
 		</div>
 	</div>
 
@@ -41,7 +48,7 @@
 		
 	</footer>
 
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
     <script src="app.js"></script>
