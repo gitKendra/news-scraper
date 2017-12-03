@@ -1,0 +1,22 @@
+{{#each article}}
+	<div class='card'>
+		<div class='card-header'>
+			<h4 class='card-title'>{{title}}</h4>
+		</div>
+		<div class='card-body'>
+			<p class='card-text'>{{body}} </p>
+			<button data-id='{{_id}}' class='btn btn-info save-btn'>Save Article</button>
+		</div>
+	</div>
+
+
+{{else}}
+
+	<div class='card text-white bg-danger'>
+		<div class='card-body'>
+			<h4 class='card-title'>No Articles to Display</h4>
+			<p class='card-text'>Click the scrape button above to get new articles.</p>
+		</div>
+	</div>
+
+{{/each}}

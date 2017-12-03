@@ -1,33 +1,46 @@
 // Grab the articles as a json
-$.getJSON("/articles", function(data) {
+$.getJSON("/", function(data) {
 
-  console.log("Length of data: " + data.length);
-  if (data.length == 0){
-    var notification = "<div class='card text-white bg-danger'><div class='card-body'>"
-      +"<h4 class='card-title'>No Articles to Display</h4>"
-      +"<p class='card-text'>Click the scrape button above to get new articles.</p></div></div>";
+  console.log("retrieved articles from DB");
 
-    console.log("No articles. Show notification");
-    $("#articles").html(notification);
-  }
-  else{
-    console.log("1 or more articles exist.");
-    // For each one
-    for (var i = 0; i < data.length; i++) {
-      console.log("Article Title: " + data[i].title);
-      // Display the apropos information on the page
-          var article = "<div class='card' data-id='"+data[i]._id+"'><div class='card-header'><h4 class='card-title'>"+data[i].title
-            +"</h4></div><div class='card-body'><p class='card-text'>"+data[i].body+"</p>"
-            +"<a href='"+data[i].link+"' class='btn btn-info save-btn'>Save Article</a></div></div>";
+  // console.log("Length of data: " + data.length);
+  // if (data.length == 0){
+  //   var notification = "<div class='card text-white bg-danger'><div class='card-body'>"
+  //     +"<h4 class='card-title'>No Articles to Display</h4>"
+  //     +"<p class='card-text'>Click the scrape button above to get new articles.</p></div></div>";
 
-      $("#articles").append(article);
-    }
-  }
+  //   console.log("No articles. Show notification");
+  //   $("#articles").html(notification);
+  // }
+  // else{
+  //   console.log("1 or more articles exist.");
+  //   // For each one
+  //   for (var i = 0; i < data.length; i++) {
+  //     console.log("Article Title: " + data[i].title);
+  //     // Display the apropos information on the page
+  //         var article = "<div class='card'><div class='card-header'>"
+  //           +"<h4 class='card-title'>"+data[i].title+"</h4></div>"
+  //           +"<div class='card-body'><p class='card-text'>"+data[i].body+"</p>"
+  //           +"<button data-id='"+data[i]._id+"' class='btn btn-info save-btn'>Save Article</div></div>";
+
+  //     $("#articles").append(article);
+  //   }
+  // }
 });
 
+$("#srape-new").on("click", function(){
+  $.ajax({
+    method: "GET",
+    url: "/scrape"
+  })
+    .done(function(data){
+      location.reload();
+      alert("Added "+data.length+" articles!");
+    });
+});
 
 // // Whenever someone clicks a p tag
-// $(document).on("click", "p", function() {
+// $(document).on("click", ".card-header", function() {
 //   // Empty the notes from the note section
 //   $("#notes").empty();
 //   // Save the id from the p tag

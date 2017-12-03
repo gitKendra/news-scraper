@@ -25,6 +25,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Use express.static to serve the public folder as a static directory
 app.use(express.static("public"));
 
+var exphbs = require("express-handlebars");
+
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
@@ -34,17 +39,29 @@ mongoose.connect("mongodb://localhost/scraper", {
 
 // Routes
 
+// // Serve index.handlebars to the root route.
+// app.get("/", function(req, res) {
+//   db.Article.find({}).then(function(dbArticles){
+//     res.render("index", dbArticles);
+//   })
+//     res.render("index", null);
+//   }
+// });
+
+
 // A GET route for scraping the cnet.com website
 app.get("/scrape", function(req, res) {
-  console.log("GET Scraping");
+  var count = 0;
+
   // Grab the body of the html with request
   request("https://www.cnet.com/", function(error, response, html) {
     if (!error && response.statusCode == 200) {
       // Load html body into cheerio and save it to $ for a shorthand selector
       var $ = cheerio.load(html);
+      var results = [];
       // Grab every div with a class of item within a div class of latestScrollItems
       $("div.latestScrollItems div.item").each(function(i, element) {
-        console.log("Item element #: " + i);
+
         // Save an empty result object
         var result = {};
 
@@ -52,41 +69,61 @@ app.get("/scrape", function(req, res) {
         result.title = $(this).children("a").children("div").children("h3").text();
         result.body = $(this).children("a").children("div").children("p").text();
         result.link = "https://www.cnet.com" + $(this).children("a").attr("href");
-        // console.log(result);
 
+        results.push(result);
+        // console.log(result);
+      });
+
+      // Add articles to DB
         // Create a new Article using the `result` object built from scraping
          db.Article
-          .create(result)
-          .then(function(dbArticle) {
-            // If we were able to successfully scrape and save an Article, send a message to the client
-            res.send("Scrape Complete");
+          .create(results)
+          .then(function(dbArticles) {
+            console.log("Articles");
+            res.send(dbArticles);
           })
           .catch(function(err) {
             // If an error occurred, send it to the client
             res.json(err);
           });
-      
-      });
-
     } // end if
 
-   }); // end request
+  }); // end request
+
 }); // end scrape
 
 // Route for getting all Articles from the db
-app.get("/articles", function(req, res) {
+app.get("/", function(req, res) {
+  console.log("GET /");
   // Grab every document in the Articles collection
   db.Article
     .find({})
     .then(function(dbArticle) {
+      console.log("RENDER Index");
+      console.log(dbArticle);
       // If we were able to successfully find Articles, send them back to the client
-      res.json(dbArticle);
+      res.render("index", {article: dbArticle});
     })
     .catch(function(err) {
       // If an error occurred, send it to the client
       res.json(err);
     });
 });
+
+// // Route for getting all Articles from the db
+// app.get("/articles", function(req, res) {
+//   // Grab every document in the Articles collection
+//   db.Article
+//     .find({})
+//     .then(function(dbArticle) {
+//       // If we were able to successfully find Articles, send them back to the client
+//       res.json(dbArticle);
+//     })
+//     .catch(function(err) {
+//       // If an error occurred, send it to the client
+//       res.json(err);
+//     });
+// });
 
 // // Route for grabbing a specific Article by id, populate it with it's note
 // app.get("/articles/:id", function(req, res) {
