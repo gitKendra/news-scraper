@@ -1,4 +1,5 @@
 // MONGODB_URI: mongodb://heroku_8zwdl929:9ab3d2g5jp6pvhtlcqgjio418k@ds119486.mlab.com:19486/heroku_8zwdl929
+//mongodb://localhost/scraper
 var express = require("express");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
@@ -33,7 +34,7 @@ app.set("view engine", "handlebars");
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/scraper", {
+mongoose.connect("mongodb://heroku_8zwdl929:9ab3d2g5jp6pvhtlcqgjio418k@ds119486.mlab.com:19486/heroku_8zwdl929", {
   useMongoClient: true
 });
 
@@ -135,7 +136,7 @@ app.get("/article/:id", function(req, res) {
     });
 });
 
-// Route for updating an Article's saved
+// Route for updating an Article's saved status
 app.put("/articles/:id/:bool", function(req, res) {
   console.log("PUT")
 
@@ -157,7 +158,7 @@ app.post("/article/:id", function(req, res) {
   db.Note
     .create(req.body)
     .then(function(dbNote) {
-      return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
+      return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: {note: dbNote._id} }, { new: true });
     })
     .then(function(dbArticle) {
       // If we were able to successfully update an Article, send it back to the client
@@ -168,6 +169,27 @@ app.post("/article/:id", function(req, res) {
       res.json(err);
     });
 });
+
+app.delete("/note/:nid/:aid", function(req, res){
+
+  // // Delete the note from the Article 
+  // db.Article
+  //   .findOneAndUpdate({ _id:req.params.aid}, { "$pull": { "note": { _id:req.params.nid } }})
+  //   .then(function(dbArticle){
+  //     console.log("Removed note from Article");
+      // Delete the note from Note
+      db.Note  
+        .findOneAndRemove({_id:req.params.nid})
+        .then(function(data){
+          console.log("Removed note");
+          res.json(data);
+        })
+        .catch(function(err){
+          res.json(err)
+        })
+    // });
+
+})
 
 // Start the server
 app.listen(PORT, function() {

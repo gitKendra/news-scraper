@@ -1,12 +1,13 @@
 {{!-- Only output articles if they exist in database --}}
 {{#each article}}
 	<div class='card'>
-		<div class='card-header'>
+		<div class='card-header d-flex justify-content-between'>
 			<h4 class='card-title'>{{title}}</h4>
+			<button data-id='{{_id}}' data-bool="true" class='btn btn-info save-btn'>Save Article</button>
 		</div>
 		<div class='card-body'>
 			<p class='card-text'>{{body}} </p>
-			<button data-id='{{_id}}' data-bool="true" class='btn btn-info save-btn'>Save Article</button>
+			
 		</div>
 	</div>
 

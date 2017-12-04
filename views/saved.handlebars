@@ -1,12 +1,14 @@
 {{#each article}}
 	<div class='card'>
-		<div class='card-header'>
+		<div class='card-header d-flex justify-content-between'>
 			<h4 class='card-title'>{{title}}</h4>
+			<div class='btn-save-group'>
+				<button data-id='{{_id}}' data-toggle="modal" data-target="#notesModal" class='btn btn-info notes-btn'>Article Notes</button>
+				<button data-id='{{_id}}' data-bool="false" class='btn btn-info del-btn'>Delete from Saved</button>
+			</div>
 		</div>
 		<div class='card-body'>
 			<p class='card-text'>{{body}} </p>
-			<button data-id='{{_id}}' data-toggle="modal" data-target="#notesModal" class='btn btn-info notes-btn'>Article Notes</button>
-			<button data-id='{{_id}}' data-bool="false" class='btn btn-info del-btn'>Delete from Saved</button>
 		</div>
 	</div>
 
@@ -35,9 +37,7 @@
 
       <div class="modal-body">
 
-	    	<ul id="notes-list">
-	    		
-	    	</ul>
+	    	<ul class="list-group" id="notes-list"></ul>
 
 	        <form>
 	          <div class="form-group">
@@ -51,7 +51,7 @@
 
 	  <div class="modal-footer">
 		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		  <button type="button" class="btn btn-primary" id="savenote">Save note</button>
+		  <button type="button" class="btn btn-info" id="savenote">Save note</button>
 	  </div>
    </div>
  </div>
