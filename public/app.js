@@ -1,33 +1,4 @@
-// Grab the articles as a json
-$.getJSON("/", function(data) {
-
-  console.log("retrieved articles from DB");
-
-  // console.log("Length of data: " + data.length);
-  // if (data.length == 0){
-  //   var notification = "<div class='card text-white bg-danger'><div class='card-body'>"
-  //     +"<h4 class='card-title'>No Articles to Display</h4>"
-  //     +"<p class='card-text'>Click the scrape button above to get new articles.</p></div></div>";
-
-  //   console.log("No articles. Show notification");
-  //   $("#articles").html(notification);
-  // }
-  // else{
-  //   console.log("1 or more articles exist.");
-  //   // For each one
-  //   for (var i = 0; i < data.length; i++) {
-  //     console.log("Article Title: " + data[i].title);
-  //     // Display the apropos information on the page
-  //         var article = "<div class='card'><div class='card-header'>"
-  //           +"<h4 class='card-title'>"+data[i].title+"</h4></div>"
-  //           +"<div class='card-body'><p class='card-text'>"+data[i].body+"</p>"
-  //           +"<button data-id='"+data[i]._id+"' class='btn btn-info save-btn'>Save Article</div></div>";
-
-  //     $("#articles").append(article);
-  //   }
-  // }
-});
-
+$(document).ready(function(){
 $("#srape-new").on("click", function(){
   $.ajax({
     method: "GET",
@@ -35,9 +6,86 @@ $("#srape-new").on("click", function(){
   })
     .done(function(data){
       location.reload();
-      alert("Added "+data.length+" articles!");
+      alert("Added " + data.length + " articles!");
     });
 });
+
+// Add article to Saved Articles
+$(document).on("click", ".save-btn, .del-btn", function(){
+  var articleId = $(this).data("id");
+  var bool = $(this).data("bool");
+console.log(bool);
+  $.ajax({
+    method: "PUT",
+    url: "/articles/" + articleId + "/" + bool
+  })
+  .done(function(data){
+    console.log(data);
+    location.reload();
+    if(data.saved){
+      alert("Successfully added the article.");
+    }
+    else{
+      alert("Successfully removed the article.")
+    }
+  })
+})
+
+// When user clicks on Article Notes button, show modal
+$('#notesModal').on('show.bs.modal', function (event) {
+    var modal = $(this);
+    var button = $(event.relatedTarget);
+    var articleId =  button.data("id");
+    var noteList ="";
+  // Get all notes associated with the id
+  $.getJSON("/article/" + articleId, function(data){
+
+    console.log(data);
+    console.log("note body" );
+    console.log(data.note);
+    // Clear out any existing notes from prior event
+    $("#notes-list").empty();
+
+    // Add notes to modal
+    if(data.note == undefined){
+      $("#notes-list").html("<li>No notes.</li>");
+    }
+    else{
+      $("#notes-list").append("<li>" + data.note.body +"</li>");
+    }
+
+    // update modal contents with current notes
+    modal.find('#savenote').val(data._id);
+
+  });
+});
+
+$(document).on("click", "#savenote", function(){
+  // Grab the id associated with the article from the submit button
+  var articleId = $(this).val();
+
+  if($("#noteinput").val() != null){
+    // Run a POST request to change the note, using what's entered in the inputs
+    $.ajax({
+      method: "POST",
+      url: "/article/" + articleId,
+      data: {
+        // Value taken from note textarea
+        body: $("#noteinput").val()
+      }
+    })
+      .done(function(data) {
+        // Log the response
+        console.log(data);
+        // TODO: update modal with note
+        $('#notesModal').modal('show');
+      });
+  }
+  // Also, remove the values entered in the input and textarea for note entry
+  $("#noteinput").val("");
+
+});
+
 
 // // Whenever someone clicks a p tag
 // $(document).on("click", ".card-header", function() {
@@ -101,3 +149,4 @@ $("#srape-new").on("click", function(){
 //   $("#titleinput").val("");
 //   $("#bodyinput").val("");
 // });
+})
