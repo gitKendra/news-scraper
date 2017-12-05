@@ -21,13 +21,13 @@ $(document).ready(function(){
       })
       .done(function(data){
         console.log(data);
-        location.reload();
+        // location.reload();
 
         if(data.saved){
-          alert("Successfully added the article.");
+          $("#save-alert").modal('show');
         }
         else{
-          alert("Successfully removed the article.")
+          location.reload();
         }
       })
     })
@@ -49,7 +49,7 @@ $(document).ready(function(){
 
         // Add notes to modal
         if(data.note.length == 0){
-          $("#notes-list").html("<li>No notes.</li>");
+          $("#notes-list").html("<li class='list-group-item'>No notes.</li>");
         }
         else{
           for (var i = 0; i < data.note.length; i++){
@@ -94,6 +94,7 @@ $(document).ready(function(){
 
     });
 
+    // Delete a not from the database
     $(document).on("click", ".del-note", function(){
         var noteId = $(this).data("id");
         var articleId = $(this).data("pid");

@@ -1,5 +1,10 @@
+body {
+	padding-top: 40px;
+}
+
 .nav {
-	margin: 10px 0px;
+	margin: 0px;
+    padding: 10px;
 }
 
 .card {
@@ -7,5 +12,11 @@
 }
 
 .notes-btn {
-	margin-bottom: 5px;
+	margin: 2px;
+}
+
+
+a,
+a:hover {
+	color: white;
 }
