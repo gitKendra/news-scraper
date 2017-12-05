@@ -1,7 +1,7 @@
 {{#each article}}
 	<div class='card'>
 		<div class='card-header d-flex justify-content-between'>
-			<h4 class='card-title'>{{title}}</h4>
+			<a href='{{link}}' class='title-link' target='_blank'><h4 class='card-title'>{{title}}</h4></a>
 			<div class='btn-save-group'>
 				<button data-id='{{_id}}' data-toggle="modal" data-target="#notesModal" class='btn btn-info notes-btn'>Article Notes</button>
 				<button data-id='{{_id}}' data-bool="false" class='btn btn-info del-btn'>Delete from Saved</button>

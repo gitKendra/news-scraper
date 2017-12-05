@@ -16,7 +16,12 @@ body {
 }
 
 
-a,
-a:hover {
+a.nav-link,
+a.nav-link:hover {
 	color: white;
+}
+ 
+a.title-link {
+	text-decoration: none;
+	color: black;
 }

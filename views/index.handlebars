@@ -2,7 +2,7 @@
 {{#each article}}
 	<div class='card'>
 		<div class='card-header d-flex justify-content-between'>
-			<h4 class='card-title'>{{title}}</h4>
+			<a href='{{link}}' class='title-link' target='_blank'><h4 class='card-title'>{{title}}</h4></a>
 			<button data-id='{{_id}}' data-bool="true" class='btn btn-info save-btn'>Save Article</button>
 		</div>
 		<div class='card-body'>
